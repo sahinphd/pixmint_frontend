@@ -1,6 +1,6 @@
 <template>
   <div v-if="user">
-    <div class="container-sm bg-dark text-white">
+    <div class="container-lg bg-dark text-white">
       <div class="row">
         <div class="col-4" @click="openChat">
           <div class="card border shadow-sm p-1 mb-2 bg-body-tertiary rounded chatroom">
@@ -19,15 +19,15 @@
         <div class="col-12" >
           <div class="card border shadow-sm p-3 mb-2 bg-body-tertiary rounded ecomservice d-flex flex-row">
             <div class="flex-fill flex-grow-1">
-            <h4>SAT Mall</h4>
+            <h4>PIX Mall</h4>
             <p>E-commerce service platform</p>
 
-            <button class="btn btn-light me-2" @click="copyReferralLink">
-                Copy Referral Link
+            <button class="btn btn-light me-2 px-5 refBtn" @click="copyReferralLink">
+                Copy Referral
               </button>
             </div>
               
-            <img src="../assets/img/5.png" alt="Chat Room" class="img-fluid mb-2 rounded card-image">
+            <img src="../assets/img/5.png" alt="Chat Room" class="img-fluid mb-2 rounded card-image pix-card-img">
           </div>
         </div>
       </div>
@@ -168,7 +168,15 @@ const copyReferralLink = async () => {
 
 
 <style>
-
+*{
+  color: #fff;
+}
+.pix-card-img{
+  max-width: 40% !important;
+}
+.refBtn{
+  background: #ed9a31 !important;
+}
 .card-image{
   max-width: 150px;
   max-height: auto;

@@ -1,8 +1,8 @@
 <template>
-<header class="bg-gray-100 p-4 shadow-md bg-dark text-white header-nav">
-    <nav class="navbar  bg-dark text-white">
-        <div class="container-fluid bg-dark text-white">
-            <a class="navbar-brand bg-dark text-white">Home</a>
+<header class="bg-gray-100 p-4 shadow-md text-white header-nav">
+    <nav class="navbar   text-white">
+        <div class="container-fluid  text-white">
+            <a class="navbar-brand  text-white">Home</a>
             <div>
                 <i class="bi bi-bell-fill"></i>
                 <span class="visually-hidden">New alerts</span>
@@ -44,6 +44,7 @@ function logout() {
     left: 0;
     right: 0;
     z-index: 1000;
+    background: linear-gradient(to bottom, #212529, #343a40 , #212529 );
 }
 nav {
     font-weight: bold;

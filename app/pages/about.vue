@@ -25,7 +25,7 @@
             </form>
           </div>
         </div>
-  <HierarchyAccordion :hierarchy="hierarchy" />
+  
         <!-- Card 2: Investment Package -->
         <div class="col-12">
           <div class="investment-package p-2 rounded">
@@ -54,17 +54,17 @@
         </div>
 
         <!-- Daily Income Banner -->
-        <div class="col-12 ">
+        <div class="col-12 mt-2 ">
           <div class="daily-income">
             <div class="daily-income-value text-center">
               <span>1.85%</span> Daily income
             </div>
             <div class="amount">
               <div class="row mx-2 income-slab">
-                <div class="col-3 activate">50</div>
+                <div class="col-3 activate">30</div>
+                <div class="col-3">100</div>
+                <div class="col-3">500</div>
                 <div class="col-3">1000</div>
-                <div class="col-3">10000</div>
-                <div class="col-3">100000</div>
               </div>
               <div class="row m-2">
                 <div class="col-12">
@@ -113,9 +113,17 @@
           </div>
 
         </div>
+
+        
+      </div>
+
+       <div class="col-12 mt-2">
+      <div class="card border shadow-sm p-3 mb-4 bg-body-tertiary rounded exclusive-benefits">
+      <HierarchyAccordion :hierarchy="hierarchy" />
       </div>
     </div>
- 
+    </div>
+   
   </div>
 </template>
 

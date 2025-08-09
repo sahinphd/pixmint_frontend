@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container py-3">
+        <div class="container-md">
             <div class="d-flex align-items-start bg-dark text-white rounded p-3  userdiv">
                 <img src="../assets/img/head.png" class="rounded-circle me-3" alt="avatar" width="40" height="40">
 
@@ -38,9 +38,7 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
                 <i class="bi bi-gear-fill fs-5 text-secondary" />
             </div>
             <div class="d-flex align-items-start bg-dark text-white rounded p-3 my-2 paymentdiv">
@@ -49,6 +47,28 @@
                     <div class="col-6">
                         <button class="btn btn-warning" @click="showModal = true">
                             Recharge wallet
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start bg-dark text-white rounded p-3 my-2 paymentdiv">
+                <div class="row">
+                    <div class="col-6" />
+                    <div class="col-6">
+                        <button class="btn btn-warning" @click="showModal = true" >
+                           Recharge History
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start bg-dark text-white rounded p-3 my-2 paymentdiv">
+                <div class="row">
+                    <div class="col-6" />
+                    <div class="col-6">
+                        <button class="btn btn-warning" @click="showModal = true" disabled>
+                            Withdraw History
                         </button>
                     </div>
                 </div>
@@ -96,10 +116,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Pay Currency</label>
                                 <select v-model="form.pay_currency" class="form-select" required>
-                                    <option value="btc">BTC</option>
-                                    <option value="eth">ETH</option>
-                                    <option value="trx">TRX</option>
-                                    <option value="ltc">LTC</option>
+                                    <option value="usd">USD</option>
                                 </select>
                             </div>
                         </div>

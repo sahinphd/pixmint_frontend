@@ -44,8 +44,8 @@ const route = useRoute()
     height: 50px;
     color: #fff;
 }
-.nav-icon.active{
-    color: #fff;
+.nav-icon.active > i{
+    color: #000 !important;
 }
 .nav-icon.active,
 .nav-icon:hover {

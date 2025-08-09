@@ -11,14 +11,14 @@
           class="accordion-item accordion-item-color"
         >
           <!-- Check if this A has B-children -->
-          <template v-if="childrenMapB[a.usercode] && childrenMapB[a.usercode].length">
+          <template v-if="childrenMapB[a.usercode	] && childrenMapB[a.usercode	].length">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed  accordion-item-color" type="button"
                 data-bs-toggle="collapse"
                 :data-bs-target="'#collapseA'+idxA"
               >
                 <span class="badge bg-primary me-2">A</span>
-                <strong>{{ a.name }}</strong> ({{ a.userid }})
+                <strong>{{ a.name }}</strong> ({{ a.usercode }})
               </button>
             </h2>
             <div :id="'collapseA'+idxA" class="accordion-collapse collapse" data-bs-parent="#refHierarchy">
@@ -52,7 +52,7 @@
                               class="ms-3 mt-1"
                             >
                               <span class="badge bg-warning text-dark me-2">C</span>
-                              <strong>{{ c.name }}</strong> ({{ c.userid }})
+                              <strong>{{ c.name }}</strong> ({{ c.usercode }})
                             </div>
                           </div>
                         </div>
