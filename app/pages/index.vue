@@ -99,13 +99,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import AES from 'crypto-js/aes'
+// import AES from 'crypto-js/aes'
 // import Utf8 from 'crypto-js/enc-utf8'
 
 const user = ref(null)
 const router = useRouter()
 
-const secretKey = 'a#T2@Lk!7r^9z*Xq' 
+// const secretKey = 'a#T2@Lk!7r^9z*Xq' 
 
 onMounted(() => {
   const storedUser = localStorage.getItem('user')
@@ -145,7 +145,8 @@ const copyReferralLink = async () => {
 
   console.log('Clicked', user.value.usercode)
 
-  const encryptedCode = AES.encrypt(user.value.usercode, secretKey).toString()
+  // const encryptedCode = AES.encrypt(user.value.usercode, secretKey).toString()
+  const encryptedCode =user.value.usercode
   console.log('Encrypted Code:', encryptedCode)
 
   const baseUrl = window.location.origin
