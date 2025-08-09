@@ -1,0 +1,42 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "build:cpanel": "nuxt generate",
+    "build:shared": "nuxt generate && npm run optimize:shared",
+    "build:clean": "npm run clean && npm run build:shared",
+    "optimize:shared": "echo 'Optimizing for shared hosting...' && echo 'Build complete for shared cPanel hosting!'",
+    "deploy:cpanel": "npm run build:cpanel && echo 'Build complete! Upload the .output/public folder to your cPanel public_html directory'",
+    "deploy:shared": "npm run build:shared && echo 'Shared hosting build ready! Upload .output/public contents to public_html'",
+    "clean": "rm -rf .nuxt .output node_modules/.cache",
+    "clean:win": "rmdir /s /q .nuxt .output node_modules\\.cache 2>nul || echo Cache cleared",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "troubleshoot": "bash troubleshoot-build.sh",
+    "troubleshoot:win": "troubleshoot-build.bat"
+  },
+  "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^2.0.0",
+    "@nuxt/eslint": "^1.7.1",
+    "@nuxt/image": "^1.11.0",
+    "axios": "^1.7.9",
+    "crypto-js": "^4.2.0",
+    "eslint": "^9.32.0",
+    "nuxt": "^4.0.1",
+    "qrcode.vue": "^3.6.0",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "vue-tsc": "^3.0.5"
+  }
+}

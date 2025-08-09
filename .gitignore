@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+# build output
+.nuxt/
+.output/
+dist/
+.cache/
+
+# environment variables
+.env
+.env.*
+
+# OS/IDE/user files
+.DS_Store
+Thumbs.db
+*.log
+
+# Nuxt preview special
+.preview/
