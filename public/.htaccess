@@ -1,0 +1,11 @@
+# Cache control for assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp)$">
+    Header set Cache-Control "public, max-age=2592000"
+    Header set Expires "access plus 30 days"
+</FilesMatch>
+
+# Cache control for HTML
+<FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Expires "access plus 1 hour"
+</FilesMatch>
