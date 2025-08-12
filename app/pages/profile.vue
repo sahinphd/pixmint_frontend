@@ -31,7 +31,7 @@
         </div>
         <i class="bi bi-gear-fill fs-5 text-white" @click="$router.push('/settings')" style="cursor: pointer;" />
       </div>
-      <div class="d-flex align-items-start bg-dark text-white rounded p-3 my-2 paymentdiv">
+      <div class="d-flex align-items-start text-white rounded p-3 my-2 paymentdiv">
         <div class="row">
           <div class="col-12">
             <div class="d-flex flex-wrap gap-2">
@@ -41,7 +41,7 @@
               <button class="btn btn-warning btn-sm flex-fill glossy-btn" disabled>
                 Withdraw
               </button>
-              <button class="btn btn-warning btn-sm flex-fill glossy-btn" disabled>
+              <button class="btn btn-warning btn-sm flex-fill glossy-btn" @click="$router.push('/history')">
                 History
               </button>
             </div>
@@ -110,9 +110,28 @@
     <div v-if="error" class="alert alert-danger mt-3 text-center">
       {{ error }}
     </div>
+    <div class="d-flex align-items-end text-white rounded p-3 my-2 paymentdiv">
+      <CopyReferral 
+        button-text="Share Referral" 
+        button-class="btn-outline btn-success btn-rounded"
+        custom-class="btn-full-width"
+        text-class="fw-bold"
+        custom-message="Referral copied successfully!" 
+        success-text="Link Copied! ✨"
+        loading-text="Generating link..."
+        default-icon="🚀"
+        success-icon="🎉"
+        loading-icon="🔄"
+      />
+    </div>
+   
 
-    <!-- Order History Component -->
-    <OrderList2 />
+    <!-- Currency Vouchers Component -->
+    <CurrencyVouchers />
+
+    <!-- Logout Component -->
+    <LogoutButton />
+
   </div>
 </template>
 
@@ -122,6 +141,9 @@ import { useRouter } from 'vue-router';
 import DRFapi from '@/utils/drf_api';
 import QRCode from 'qrcode.vue';
 import OrderList2 from '@/components/OrderList2.vue';
+import CurrencyVouchers from '@/components/CurrencyVouchers.vue';
+import LogoutButton from '@/components/LogoutButton.vue';
+import CopyReferral from '@/components/CopyReferral.vue';
 
 const user = ref(null);
 const router = useRouter();
@@ -190,10 +212,10 @@ const createPayment = async () => {
 
     // Accept response if payment_id exists
     if (drfRes.data && drfRes.data.payment_id) {
-    //   paymentUrl.value = drfRes.data.pay_address && drfRes.data.price_amount
-    //     ? drfRes.data.pay_address + '?amount=' + drfRes.data.price_amount
-    //     : '';
-          paymentUrl.value = drfRes.data.pay_address && drfRes.data.price_amount
+      //   paymentUrl.value = drfRes.data.pay_address && drfRes.data.price_amount
+      //     ? drfRes.data.pay_address + '?amount=' + drfRes.data.price_amount
+      //     : '';
+      paymentUrl.value = drfRes.data.pay_address && drfRes.data.price_amount
         ? drfRes.data.pay_address
         : '';
       paymentAddress.value = drfRes.data.pay_address || '';
@@ -222,19 +244,22 @@ const createPayment = async () => {
   background-position: center;
   color: #fff;
 }
+
 .paymentdiv {
   background-image: url('../assets/img/inviteFriend.png');
   background-size: cover;
   background-position: center;
   color: #fff;
 }
+
 .paymentdiv>.row {
   width: 100%;
 }
+
 .btn {
   border-radius: 8px;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
@@ -242,34 +267,45 @@ const createPayment = async () => {
   position: relative;
   overflow: hidden;
 }
-.btn:hover:not(:disabled), .btn:focus {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+
+.btn:hover:not(:disabled),
+.btn:focus {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px) scale(1.03);
   opacity: 0.95;
 }
+
 .glossy-btn {
   position: relative;
   overflow: hidden;
 }
+
 .glossy-btn::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 100%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
   pointer-events: none;
 }
+
 .btn-warning {
   background: linear-gradient(90deg, #FFB300 0%, #FFEA00 100%);
   color: #222;
 }
+
 .btn-success {
   background: linear-gradient(90deg, #43EA7F 0%, #1D976C 100%);
   color: #fff;
 }
+
 .btn-secondary {
   background: linear-gradient(90deg, #BDBDBD 0%, #757575 100%);
   color: #fff;
 }
+
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;

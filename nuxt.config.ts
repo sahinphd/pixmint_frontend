@@ -24,6 +24,12 @@ export default defineNuxtConfig({
   // Configure for static hosting (shared cPanel)
   ssr: false, // Required for static hosting
   
+  // Route rules for dynamic routes
+  routeRules: {
+    // Ensure register page works with dynamic parameters
+    '/register/**': { prerender: false }
+  },
+  
   // Experimental features for better compatibility
   experimental: {
     payloadExtraction: false // Disable for shared hosting

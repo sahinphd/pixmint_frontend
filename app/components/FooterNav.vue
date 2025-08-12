@@ -1,5 +1,5 @@
 <template>
-<footer class="footer-nav bg-dark py-3">
+<footer class="footer-nav bg-dark pt-2 pb-0">
     <div class="d-flex justify-content-around align-items-center">
         <nuxt-link to="/" class="nav-icon" :class="{ active: route.path === '/' }">
             <i class="bi bi-compass-fill"></i>

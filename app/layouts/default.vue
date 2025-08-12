@@ -13,12 +13,18 @@
 
 
 <style scoped>
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
 .defaultLayout {
   background-color: black;
 }
 .defaultSlot{
-  padding: 60px 0;
-  margin: 60px 0;
+  padding: 40px 0;
+  margin: 40px 0;
 }
 </style>
 

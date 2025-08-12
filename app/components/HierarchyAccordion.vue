@@ -1,6 +1,6 @@
 <template>
   <div class="card border shadow-sm p-3 mb-4 bg-body-tertiary rounded hierarchy-card">
-    <h3 class="text-center mb-3">Referral Hierarchy</h3>
+    <h3 class="text-center mb-3">Referred Team</h3>
 
     <div v-if="hierarchy.length">
       <div class="accordion" id="refHierarchy">

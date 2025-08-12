@@ -1,10 +1,10 @@
 <template>
   <div class="settings-card">
     <div class="profile-header">
-      <img :src="profile.avatar" class="avatar" alt="avatar" />
+      <img src="https://picsum.photos/seed/{{profile.value.uid}}/50/50" class="avatar" alt="avatar" />
       <div>
         <h5>{{ profile.name }}</h5>
-        <p class="text-muted">{{ profile.email }}</p>
+        <p class="text-white rounded">{{ profile.email }}</p>
       </div>
     </div>
     <div class="profile-info">
@@ -43,9 +43,9 @@ onMounted(() => {
     user.value = JSON.parse(storedUser);
     // Update profile with user data
     profile.value = {
-      avatar: '/assets/img/9.png',
+      avatar: '/assets/img/9.png', 
       name: user.value?.name || 'User Name',
-      email: user.value?.email || 'useremail.pixmintai.com',
+      email: user.value?.email || 'useremail@pixmintai.com',
       phone: user.value?.phone || '+1 9876543210',
       uid: user.value?.usercode || 'NA',
       registrationTime: user.value?.registrationTime || '2025-04-22 15:26:37',

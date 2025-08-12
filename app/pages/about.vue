@@ -1,31 +1,44 @@
 <template>
   <div>
-    <div class="container-sm bg-dark text-white">
+    <div class="container-sm  text-white">
       <div class="row">
+        
+        <!-- Daily Run Component -->
+        <div class="col-12">
+          <DailyRun 
+            :duration="30"
+            :reward="2.5"
+            :auto-reset="true"
+            @task-completed="onTaskCompleted"
+            @task-error="onTaskError"
+          />
+        </div>
+        
         <!-- Card 1: Exclusive Benefits -->
         <div class="col-12">
           <div class="card border shadow-sm p-3 mb-4 bg-body-tertiary rounded exclusive-benefits">
             <h2>Exclusive Benefits</h2>
-            <button class="fluide-glass col-md-4 mb-1">
+            <!-- <button class="fluide-glass col-md-4 mb-1">
               Limited to one order
-            </button>
-            <div class="exclusive-text"><span>1.30%</span>&nbsp; Daily income</div>
-            <div class="exclusive-text"><span>1095</span>&nbsp; Daily expiration</div>
-            <div class="exclusive-text">Investment amount: 100 - 100000 USD</div>
+            </button> -->
+            <div class="exclusive-text"><span>1.50%-1.70%</span>&nbsp; Daily Income</div>
+            <div class="exclusive-text"><span>1095</span>&nbsp; Daily Expiration</div>
+            <div class="exclusive-text">Minimum amount: 30 - 500 USDT</div>
+
 
             <form class="row g-2  exclusive-form">
               <div class="col-7">
-                <input type="text" class="form-control exclusive-input" placeholder="Please enter" >
+                <input type="text" class="form-control exclusive-input" placeholder="Invest to PIX" readonly>
               </div>
               <div class="col-5">
-                <button type="submit" class="btn btn-light w-100 exclusive-button">
+                <button type="button" class="btn btn-light w-100 exclusive-button" @click="$router.push('/profile')">
                   Invest now
                 </button>
               </div>
             </form>
           </div>
         </div>
-  
+
         <!-- Card 2: Investment Package -->
         <div class="col-12">
           <div class="investment-package p-2 rounded">
@@ -35,7 +48,7 @@
                 <p class="mb-0">Investment Package</p>
                 <img src="../assets/img/15.png" alt="">
               </div>
-              <div class="col-4 text-end">
+              <div class="col-4 text-end" @click="$router.push('/profile')" style="cursor: pointer;">
                 My order &nbsp; <i class="bi bi-arrow-right-circle-fill" />
               </div>
             </div>
@@ -43,87 +56,108 @@
             <div class="row investment-row-two mt-3">
               <div class="col-5">
                 <p>Investment value</p>
-                <h4>50 SUSD</h4>
+                <h4>{{total_investment}}USDT</h4>
               </div>
               <div class="col-7">
-                <p>Cumulative Income (SAT)</p>
-                <h4>172.61331</h4>
+                <p>Cumulative Income (PIX)</p>
+                <h4>{{cumulativeIncome}}PIX</h4>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Daily Income Banner -->
+      
+
+        <!-- Card 3: Daily Income Banner -->
         <div class="col-12 mt-2 ">
           <div class="daily-income">
             <div class="daily-income-value text-center">
-              <span>1.85%</span> Daily income
+              <span></span> Daily income
             </div>
-            <div class="amount">
-              <div class="row mx-2 income-slab">
-                <div class="col-3 activate">30</div>
-                <div class="col-3">100</div>
-                <div class="col-3">500</div>
-                <div class="col-3">1000</div>
-              </div>
-              <div class="row m-2">
-                <div class="col-12">
-                  <form class="row g-2  income-form">
-                    <div class="col-7">
-                      <input type="text" class="form-control income-input" placeholder="Please enter the amount" >
-                    </div>
-                    <div class="col-5">
-                      <button type="submit" class="btn btn-light w-100 income-button">
-                        Invest now
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+            <div class="amount">             
               <div class="rate-table-container">
-    <table class="rate-table">
-      <thead>
-        <tr>
-          <th>Package</th>
-          <th>Daily rate of return</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>50-950 SUSD</td>
-          <td>0.4% - 2%</td>
-        </tr>
-        <tr>
-          <td>1000-9000 SUSD</td>
-          <td>0.5% - 2.2%</td>
-        </tr>
-        <tr>
-          <td>10000-90000 SUSD</td>
-          <td>0.6% - 2.4%</td>
-        </tr>
-        <tr>
-          <td>100000-900000 SUSD</td>
-          <td>0.7% - 2.7%</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+                <table class="rate-table">
+                  <thead>
+                    <tr>
+                      <th>Package</th>
+                      <th>Daily rate of return</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>P1: 30-100 USDT</td>
+                      <td>1.5% - 1.7%</td>
+                    </tr>
+                    <tr>
+                      <td>P2: 100-250 USDT</td>
+                      <td>1.8% - 2.0%</td>
+                    </tr>
+                    <tr>
+                      <td>P3: 250-500 USDT</td>
+                      <td>2.1% - 2.3%</td>
+                    </tr>
+                    <tr>
+                      <td>P4: 500-1000 USDT</td>
+                      <td>2.4% - 2.6%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
             </div>
           </div>
 
         </div>
 
-        
+
+           <!-- Card 4: Team Benefits-->
+        <div class="col-12 mt-2 ">
+          <div class="team-income">
+            <div class="team-income-value text-center">
+              <span></span> Team Benefits
+            </div>
+            <div class="amount">             
+              <div class="rate-table-container">
+                <table class="rate-table">
+                  <thead>
+                    <tr>
+                      <th>Team Level</th>
+                      <th>Benefits from team</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>A: 1st generation</td>
+                      <td>12% of team income</td>
+                    </tr>
+                    <tr>
+                      <td>B: 2nd generation</td>
+                      <td>5% of team income</td>
+                    </tr>
+                    <tr>
+                      <td>C: 3rd generation</td>
+                      <td>3% of team income</td>
+                    </tr>                  
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      
+
+
       </div>
 
-       <div class="col-12 mt-2">
-      <div class="card border shadow-sm p-3 mb-4 bg-body-tertiary rounded exclusive-benefits">
-      <HierarchyAccordion :hierarchy="hierarchy" />
+      <div class="col-12 mt-2">
+        <div class="card border shadow-sm p-3 mb-4 bg-body-tertiary rounded exclusive-benefits">
+          <HierarchyAccordion :hierarchy="hierarchy" />
+        </div>
       </div>
     </div>
-    </div>
-   
+
   </div>
 </template>
 
@@ -131,8 +165,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import HierarchyAccordion from '@/components/HierarchyAccordion.vue'
+import DailyRun from '@/components/DailyRun.vue'
 import DRFapi from '@/utils/drf_api'
 
+const total_investment = ref(0)
+const cumulativeIncome = ref(0)
 const hierarchy = ref([])
 
 const fetchHierarchy = async (userId) => {
@@ -141,9 +178,20 @@ const fetchHierarchy = async (userId) => {
     hierarchy.value = response.data || []
   } catch (e) {
     console.log(e);
-    
     hierarchy.value = []
   }
+}
+
+// Daily run event handlers
+const onTaskCompleted = (data) => {
+  console.log('Daily task completed:', data)
+  // You can update UI or show notifications here
+  cumulativeIncome.value += data.reward
+}
+
+const onTaskError = (error) => {
+  console.error('Daily task error:', error)
+  // Handle error (show toast, etc.)
 }
 
 onMounted(() => {
@@ -203,7 +251,7 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   color: #fff;
-  height: 135px;
+  height: 180px;
 }
 
 .investment-row-one img {
@@ -226,6 +274,21 @@ onMounted(() => {
   height: 428px;
 }
 
+.team-income {
+  background-image: url('../assets/img/item14.png');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  height: 428px;
+}
+.team-income-value {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
 .amount>.income-slab {
   background-color: #006cdc;
   padding: 10px;
@@ -238,17 +301,21 @@ onMounted(() => {
   font-weight: bold;
   border-radius: 5px;
 }
-.income-input{
+
+.income-input {
   background-color: #0049a4;
   border-color: #0049a4;
   color: #fff;
 }
+
 .income-input::placeholder {
   color: #fff;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
-.income-button{
-  color:#0086ff;
+
+.income-button {
+  color: #0086ff;
 }
 
 .rate-table-container {
@@ -283,6 +350,4 @@ onMounted(() => {
 .rate-table tbody tr:not(:last-child) td {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-
 </style>

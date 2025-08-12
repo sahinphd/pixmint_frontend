@@ -1,3 +1,11 @@
+# Enable mod_rewrite for SPA routing
+RewriteEngine On
+
+# Handle SPA routing - redirect all requests to index.html except for existing files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ /index.html [L]
+
 # Cache control for assets
 <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp)$">
     Header set Cache-Control "public, max-age=2592000"
