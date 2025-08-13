@@ -8,10 +8,15 @@
             <div class="form-group">
               <input v-model="userid" placeholder="UserID" class="form-control mb-2" >
               <input v-model="password" type="password" placeholder="Password" class="form-control mb-2" >
-              <button type="submit" class="btn btn-primary mb-2">Login</button>
+              <button type="submit" class="btn btn-warning mb-2">Login</button>
               <p v-if="error" class="text-danger">{{ error }}</p>
             </div>
           </form>
+            <div class="col-12 text-center mt-2">
+            <small>Forgot Password? &nbsp;<a href="#" @click.prevent="$router.push('/login')"
+                class="text-danger">Reset Password</a>
+            </small>
+          </div>
         </div>
       </div>
     </div>
@@ -59,11 +64,16 @@ const handleLogin = async () => {
 };
 </script>
 <style>
+
 .card-parent{
-  background-color: #000;
+  /* background-color: #000; */
+  padding: 0;
 }
 .card{
   background-color: #000;
+  background-image: url('../assets/img/login.png');
+  background-size: cover;
+  background-position: center;
   color: #fff;
 }
 </style>

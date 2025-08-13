@@ -14,7 +14,8 @@
       </div>
     </div>
 
-    <!-- Input -->
+   <div class="align-items-center text-align-center container-md">
+     <!-- Input -->
     <form class="chat-input d-flex p-3 bg-dark border-top ai_chat_form" @submit.prevent="sendMessage">
       <input
         v-model="input"
@@ -25,6 +26,7 @@
       />
       <button class="btn btn-primary" type="submit">Send</button>
     </form>
+   </div>
 
 
   </div>

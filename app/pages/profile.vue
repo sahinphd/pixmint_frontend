@@ -1,36 +1,54 @@
 <template>
   <div>
-    <div class="container-md py-3">
-      <div class="d-flex align-items-start bg-dark text-white rounded p-3 userdiv">
-        <img src="../assets/img/head.png" class="rounded-circle me-3" alt="avatar" width="40" height="40">
-        <div class="flex-grow-1">
-          <div class="d-flex align-items-center mb-1">
-            <div class="profile">
-              <h6 class="mb-0 me-2">{{ user?.name || 'User' }}</h6>
-              <span class="badge bg-success text-white me-2">{{ user?.email || 'user@example.com' }}</span>
-            </div>
-            <span class="badge bg-warning text-dark me-2 d-flex align-items-center fw-semibold">💎 P0</span>
-            <span class="text-success fw-semibold">⬆ +0%</span>
-          </div>
-          <small class="text-muted">{{ user?.email || 'user@example.com' }}</small>
-          <div class="row mt-3">
-            <div class="col-12">
-              <div class="assets">
-                <p>Total Asset</p>
+    <div class="container-md py-0 px-0">
+      <div class="d-flex align-items-start bg-dark text-white rounded p-3 userdiv position-relative">
+        <div class="d-flex flex-column flex-grow-1">
+          <!-- User Info Section -->
+          <div class="d-flex align-items-center mb-3">
+            <img src="../assets/img/head.png" class="rounded-circle me-3" alt="avatar" width="40" height="40">
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center flex-wrap mb-1">
+                <h6 class="mb-0 me-2">{{ user?.name || 'User' }}</h6>
+                <span class="badge bg-success text-white me-2">{{ user?.email || 'user@example.com' }}</span>
+              </div>
+              <div class="d-flex align-items-center flex-wrap">
+                <span class="badge bg-warning text-dark me-2 d-flex align-items-center fw-semibold">💎 P0</span>
+                <span class="text-success fw-semibold">⬆ +0%</span>
               </div>
             </div>
-            <div class="col-8">
-              <h2>{{ totalAmount.toFixed(2) }}</h2>
+          </div>
+
+          <!-- Stats Section -->
+          <div class="row g-2 mt-2">
+            <div class="col-6 col-md-4">
+              <div class="p-2 bg-dark rounded h-100">
+                <p class="small mb-1">Total Asset: <i class="bi bi-eye-fill" style="cursor: pointer;"></i></p>
+                <h4 class="mb-0">{{ totalAmount.toFixed(2) }}</h4>
+              </div>
             </div>
-            <div class="col-4">
-              <div class="history">
-                <h6>Historical Record</h6>
+            <div class="col-6 col-md-4">
+              <div class="p-2 bg-dark rounded h-100">
+                <p class="small mb-1">Today's earnings: <span class="text-success">{{ new Date().toLocaleDateString() }}</span></p>
+                <p class="mb-0">
+                  <span class="text-success">4.3</span> / <span class="text-danger">1.5</span> %
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="p-2 bg-dark rounded h-100">
+                <div class="history" @click="$router.push('/earning-history')" style="cursor: pointer;">
+                  <h6 class="mb-0">Historical Record</h6>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <i class="bi bi-gear-fill fs-5 text-white" @click="$router.push('/settings')" style="cursor: pointer;" />
+        <i class="bi bi-gear-fill fs-5 text-white position-absolute top-0 end-0 m-3" @click="$router.push('/settings')" style="cursor: pointer;" />
       </div>
+
+
+
+
       <div class="d-flex align-items-start text-white rounded p-3 my-2 paymentdiv">
         <div class="row">
           <div class="col-12">
@@ -38,7 +56,7 @@
               <button class="btn btn-warning btn-sm flex-fill glossy-btn" @click="showModal = true">
                 Recharge
               </button>
-              <button class="btn btn-warning btn-sm flex-fill glossy-btn" disabled>
+              <button class="btn btn-warning btn-sm flex-fill glossy-btn" @click="$router.push('/withdraw')">
                 Withdraw
               </button>
               <button class="btn btn-warning btn-sm flex-fill glossy-btn" @click="$router.push('/history')">
@@ -110,25 +128,19 @@
     <div v-if="error" class="alert alert-danger mt-3 text-center">
       {{ error }}
     </div>
-    <div class="d-flex align-items-end text-white rounded p-3 my-2 paymentdiv">
-      <CopyReferral 
-        button-text="Share Referral" 
-        button-class="btn-outline btn-success btn-rounded"
-        custom-class="btn-full-width"
-        text-class="fw-bold"
-        custom-message="Referral copied successfully!" 
-        success-text="Link Copied! ✨"
-        loading-text="Generating link..."
-        default-icon="🚀"
-        success-icon="🎉"
-        loading-icon="🔄"
-      />
+    <div class="container-md d-flex align-items-end text-white rounded p-3 mt-0 paymentdiv">
+      <CopyReferral button-text="Share Referral" button-class="btn-outline btn-success btn-rounded"
+        custom-class="btn-full-width" text-class="fw-bold" custom-message="Referral copied successfully!"
+        success-text="Link Copied! ✨" loading-text="Generating link..." default-icon="🚀" success-icon="🎉"
+        loading-icon="🔄" />
     </div>
-   
+
 
     <!-- Currency Vouchers Component -->
-    <CurrencyVouchers />
-
+     <div class="container-md p-0 mt-0">
+      <CurrencyVouchers />
+     </div>
+    
     <!-- Logout Component -->
     <LogoutButton />
 

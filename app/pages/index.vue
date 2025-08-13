@@ -8,8 +8,8 @@
             <img src="../assets/img/2.png" alt="Chat Room" class="img-fluid mb-2 rounded float-right card-image">
           </div>
         </div>
-        <div class="col-8" @click="openChat">
-          <div class="card border shadow-sm p-3 mb-2 bg-body-tertiary rounded scaceCard">
+        <div class="col-8 ps-0 m-0" @click="openChat">
+          <div class="card border shadow-sm p-3 mb-0 bg-body-tertiary rounded scaceCard">
             <h4>Space Battle Royale</h4>
             <img src="../assets/img/4.png" alt="Chat Room" class="img-fluid mb-2 rounded space-battle-img">
           </div>
@@ -35,7 +35,7 @@
       </div>
       <!-- 3rdsection -->
       <div class="row">
-        <div class="col-6" @click="openChat">
+        <div class="col-12" @click="openChat">
           <div class="card border shadow-sm mb-2 bg-body-tertiary rounded earningdiv">
             <div class="m-2">
               <h4>Team Earnings</h4>
@@ -50,7 +50,7 @@
             
           </div>
         </div>
-        <div class="col-6" @click="openChat">
+        <div class="col-12" @click="openChat">
           <div class="row">
             <div class="col-12" @click="openChat">
               <div

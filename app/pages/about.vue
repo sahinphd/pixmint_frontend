@@ -16,7 +16,7 @@
         
         <!-- Card 1: Exclusive Benefits -->
         <div class="col-12">
-          <div class="card border shadow-sm p-3 mb-4 bg-body-tertiary rounded exclusive-benefits">
+          <div class="card border shadow-sm p-3 mb-2 bg-body-tertiary rounded exclusive-benefits">
             <h2>Exclusive Benefits</h2>
             <!-- <button class="fluide-glass col-md-4 mb-1">
               Limited to one order
@@ -70,12 +70,12 @@
 
         <!-- Card 3: Daily Income Banner -->
         <div class="col-12 mt-2 ">
-          <div class="daily-income">
+          <div class="daily-income rounded">
             <div class="daily-income-value text-center">
               <span></span> Daily income
             </div>
-            <div class="amount">             
-              <div class="rate-table-container">
+            <div class="amount mt-2">             
+              <div class="rate-table-container mt-2">
                 <table class="rate-table">
                   <thead>
                     <tr>
@@ -112,12 +112,12 @@
 
            <!-- Card 4: Team Benefits-->
         <div class="col-12 mt-2 ">
-          <div class="team-income">
+          <div class="team-income rounded">
             <div class="team-income-value text-center">
               <span></span> Team Benefits
             </div>
             <div class="amount">             
-              <div class="rate-table-container">
+              <div class="rate-table-container mt-2">
                 <table class="rate-table">
                   <thead>
                     <tr>
@@ -271,15 +271,15 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   color: #fff;
-  height: 428px;
+  height: 360px;
 }
 
 .team-income {
-  background-image: url('../assets/img/item14.png');
+  background-image: url('../assets/img/item15.png');
   background-size: cover;
   background-position: center;
   color: #fff;
-  height: 428px;
+  height: 280px;
 }
 .team-income-value {
   background-color: rgba(255, 255, 255, 0.1);

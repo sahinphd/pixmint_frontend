@@ -1,91 +1,67 @@
 <template>
-  <div class="register-container">
-    <div class="card border shadow-sm p-4 mb-4 bg-body-tertiary rounded">
-      <h3>Register</h3>
-      <form @submit.prevent="handleSubmit">
+  <NuxtLayout name="register">
+    <div class="register-container">
+      <div class="card border shadow-sm p-3 bg-body-tertiary rounded" style="max-width: 500px; margin: 0 auto;">
+        <h3 class="text-center mb-3">Register</h3>
+        <form @submit.prevent="handleSubmit" class="row g-2">
+          <!-- Referral Code -->
+          <div class="col-12 d-flex align-items-center mb-2">
+            <label for="referralCode" class="col-2 form-label me-2 mb-0">Ref. Code:</label>
+            <input type="text" id="referralCode" v-model="referralCode" class="form-control form-control-sm"
+              disabled>
+          </div>
+          <!-- <div class="col-12">
+            <label for="referralCode" class="form-label">Referral Code</label>
+            <input type="text" id="referralCode" v-model="referralCode" class="form-control form-control-sm" disabled>
+          </div> -->
 
-        <!-- Referral Code -->
-        <div class="form-group">
-          <label for="referralCode">Referral Code</label>
-          <input
-            type="text"
-            id="referralCode"
-            v-model="referralCode"
-            class="form-control"
-            disabled
-          />
-        </div>
+          <!-- Username -->
+          <div class="col-12 d-flex align-items-center mb-2">
+            <label for="username" class="col-2 form-label me-2 mb-0">Name:</label>
+            <input type="text" id="username" v-model="username" class="form-control form-control-sm"
+              placeholder="Your name" required>
+          </div>
 
-        <!-- Username -->
-        <div class="form-group">
-          <label for="username">Name</label>
-          <input
-            type="text"
-            id="username"
-            v-model="username"
-            class="form-control"
-            placeholder="Enter your name"
-            required
-          />
-        </div>
+          <!-- User ID -->
+          <div class="col-12 d-flex align-items-center mb-2">
+            <label for="userid" class="col-2 form-label me-2 mb-0">Login ID</label>
+            <input type="text" id="userid" v-model="userid" class="form-control form-control-sm" placeholder="User ID"
+              required>
+          </div>
 
-        <!-- User ID -->
-        <div class="form-group">
-          <label for="userid">Login ID</label>
-          <input
-            type="text"
-            id="userid"
-            v-model="userid"
-            class="form-control"
-            placeholder="Enter your user ID"
-            required
-          />
-        </div>
+          <!-- Email -->
+          <div class="col-12 d-flex align-items-center mb-2">
+            <label for="useremail" class="col-2 form-label me-2 mb-0">Email</label>
+            <input type="email" id="useremail" v-model="useremail" class="form-control form-control-sm"
+              placeholder="Your email" required>
+          </div>
 
-        <!-- Email -->
-        <div class="form-group">
-          <label for="useremail">Email</label>
-          <input
-            type="email"
-            id="useremail"
-            v-model="useremail"
-            class="form-control"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
+          <!-- Password -->
+          <div class="col-12 d-flex align-items-center mb-2">
+            <label for="password" class="col-2 form-label me-2 mb-0">Password</label>
+            <input type="password" id="password" v-model="password" class="form-control form-control-sm"
+              placeholder="Password" required>
+              &nbsp;
+              <input type="password" id="confirmPassword" v-model="confirmPassword" class="form-control form-control-sm"
+              placeholder="Confirm password" required>
+          </div>
 
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="password"
-            class="form-control"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
+         
 
-        <!-- Confirm Password -->
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            v-model="confirmPassword"
-            class="form-control"
-            placeholder="Confirm your password"
-            required
-          />
-        </div>
+          <!-- Submit -->
+          <div class="col-12 mt-2">
+            <button type="submit" class="btn btn-warning w-100">Register</button>
+          </div>
 
-        <!-- Submit -->
-        <button type="submit" class="btn btn-primary mt-3">Register</button>
-      </form>
+          <div class="col-12 text-center mt-2">
+            <small>Already have an account? <a href="#" @click.prevent="$router.push('/login')"
+                class="text-danger">Login</a>
+            </small>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup>
@@ -93,6 +69,11 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import CryptoJS from 'crypto-js'
 import DRFapi from '@/utils/drf_api'
+
+definePageMeta({
+  layout: "register" // layout without header/footer
+});
+
 
 const route = useRoute()
 const router = useRouter()
@@ -160,8 +141,16 @@ const handleSubmit = async () => {
     router.push('/')
   } catch (error) {
     let message = 'Registration failed. Please try again.'
-    if (error.response?.data?.message) {
-      message = error.response.data.message
+    if (error.response?.data) {
+      const errorData = error.response.data
+      if (typeof errorData === 'object') {
+        message = Object.keys(errorData).map(key => {
+          const fieldName = key.charAt(0).toUpperCase() + key.slice(1)
+          return `${fieldName}: ${errorData[key].join(', ')}`
+        }).join('\n')
+      } else if (error.response.data.message) {
+        message = error.response.data.message
+      }
     } else if (error.message) {
       message = error.message
     }
@@ -178,10 +167,18 @@ const handleSubmit = async () => {
   margin: auto;
   padding: 20px;
 }
+
 .card {
+  color: #f8f9fa;
   background-color: #f8f9fa;
+  background-image: url('../../assets/img/login.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  box-shadow: 0;
 }
+
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 </style>

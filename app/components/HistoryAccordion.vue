@@ -51,9 +51,9 @@ const activeTab = ref('orders')
 
 <style scoped>
 .history-accordion {
-  background: #1e293b;
+  background: #000;
   border-radius: 12px;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   margin: 1rem 0;
   color: #e2e8f0;
   animation: slideDown 0.3s ease-out;
