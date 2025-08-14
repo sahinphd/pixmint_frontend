@@ -10,13 +10,19 @@
         <label class="form-label">Phone(WhatsApp)</label>
         <input v-model="phone" type="text" placeholder="+1 1234567890" class="form-control" required />
         <button class="btn btn-sm btn-warning mt-2" type="button" @click="sendOTP('phone')">Send OTP</button>
-        <input v-model="otpPhone" type="text" class="form-control mt-2" placeholder="Enter OTP" />
+        <div v-if="showOtpFieldPhone">
+          <input v-model="otpPhone" type="text" class="form-control mt-2" placeholder="Enter OTP" />
+          <button class="btn btn-sm btn-success mt-2" type="button" @click="verifyOTP('phone')">Verify Phone OTP</button>
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label">Email</label>
         <input v-model="email" type="email" class="form-control" required />
         <button class="btn btn-sm btn-warning mt-2" type="button" @click="sendOTP('email')">Send OTP</button>
-        <input v-model="otpEmail" type="text" class="form-control mt-2" placeholder="Enter OTP" />
+        <div v-if="showOtpFieldEmail">
+          <input v-model="otpEmail" type="text" class="form-control mt-2" placeholder="Enter OTP" />
+          <button class="btn btn-sm btn-success mt-2" type="button" @click="verifyOTP('email')">Verify Email OTP</button>
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label">National ID Card</label>
@@ -44,7 +50,55 @@ const message = ref('')
 
 const sendOTP = (type) => {
   message.value = `OTP sent to your ${type}!`
+  if (type === 'phone') {
+    showOtpFieldPhone.value = true
+  } else if (type === 'email') {
+    showOtpFieldEmail.value = true
+  }
 }
+
+const verifyOTP = async (type) => {
+  if (type === 'phone') {
+    if (otpPhone.value) {
+      message.value = 'Verifying phone OTP...'
+      // Simulate API call for phone OTP verification
+      try {
+        // Replace with actual API call
+        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        if (otpPhone.value === '123456') { // Example OTP
+          message.value = 'Phone OTP verified successfully!'
+        } else {
+          message.value = 'Invalid phone OTP.'
+        }
+      } catch (error) {
+        message.value = 'Error verifying phone OTP.'
+        console.error('Phone OTP verification error:', error)
+      }
+    } else {
+      message.value = 'Please enter phone OTP.'
+    }
+  } else if (type === 'email') {
+    if (otpEmail.value) {
+      message.value = 'Verifying email OTP...'
+      // Simulate API call for email OTP verification
+      try {
+        // Replace with actual API call
+        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        if (otpEmail.value === '654321') { // Example OTP
+          message.value = 'Email OTP verified successfully!'
+        } else {
+          message.value = 'Invalid email OTP.'
+        }
+      } catch (error) {
+        message.value = 'Error verifying email OTP.'
+        console.error('Email OTP verification error:', error)
+      }
+    } else {
+      message.value = 'Please enter email OTP.'
+    }
+  }
+}
+
 const handleFile = (e) => {
   const file = e.target.files[0]
   if (file) {

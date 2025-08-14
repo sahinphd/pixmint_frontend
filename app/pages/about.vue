@@ -69,7 +69,7 @@
       
 
         <!-- Card 3: Daily Income Banner -->
-        <div class="col-12 mt-2 ">
+        <div class="col-12 mt-2">
           <div class="daily-income rounded">
             <div class="daily-income-value text-center">
               <span></span> Daily income
@@ -111,7 +111,7 @@
 
 
            <!-- Card 4: Team Benefits-->
-        <div class="col-12 mt-2 ">
+        <div class="col-12 mt-2">
           <div class="team-income rounded">
             <div class="team-income-value text-center">
               <span></span> Team Benefits
@@ -271,7 +271,7 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   color: #fff;
-  height: 360px;
+  height: 380px;
 }
 
 .team-income {
@@ -279,7 +279,7 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   color: #fff;
-  height: 280px;
+  height: 380px;
 }
 .team-income-value {
   background-color: rgba(255, 255, 255, 0.1);
