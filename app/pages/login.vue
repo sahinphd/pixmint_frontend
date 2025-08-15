@@ -6,16 +6,23 @@
           <h2>Login</h2>
           <form @submit.prevent="handleLogin">
             <div class="form-group">
-              <input v-model="userid" placeholder="UserID" class="form-control mb-2" >
-              <input v-model="password" type="password" placeholder="Password" class="form-control mb-2" >
+              <input v-model="userid" placeholder="Mobile Number without country code (Login ID)" class="form-control mb-2">
+              <input v-model="password" type="password" placeholder="Password" class="form-control mb-2">
               <button type="submit" class="btn btn-warning mb-2">Login</button>
               <p v-if="error" class="text-danger">{{ error }}</p>
             </div>
           </form>
-            <div class="col-12 text-center mt-2">
-            <small>Forgot Password? &nbsp;<a href="#" @click.prevent="$router.push('/login')"
-                class="text-danger">Reset Password</a>
+          <div class="col-12 text-center mt-2">
+            <small>Forgot Password? &nbsp;<a href="#" @click.prevent="$router.push('/login')" class="text-danger">Reset
+                Password</a>
             </small>
+          </div>
+
+        </div>
+        <div class="container d-flex justify-content-center col-12 align-items-center text-center mt-3">
+          <div class="col-12">
+            <GooglePlayButton />
+
           </div>
         </div>
       </div>
@@ -51,11 +58,13 @@ const handleLogin = async () => {
     auth.setTokens(tokens);
     // Save user info (if any) separately, or just a flag
     // localStorage.setItem("user", JSON.stringify({ userid: userid.value }));
-    localStorage.setItem("user", JSON.stringify({ id: tokens.id,
+    localStorage.setItem("user", JSON.stringify({
+      id: tokens.id,
       userid: tokens.userid,
       name: tokens.name,
       usercode: tokens.usercode,
-      refarcode: tokens.refarcode }));
+      refarcode: tokens.refarcode
+    }));
     // Redirect to index
     await router.push("/");
   } catch {
@@ -64,12 +73,12 @@ const handleLogin = async () => {
 };
 </script>
 <style>
-
-.card-parent{
+.card-parent {
   /* background-color: #000; */
   padding: 0;
 }
-.card{
+
+.card {
   background-color: #000;
   background-image: url('../assets/img/login.png');
   background-size: cover;
@@ -77,4 +86,3 @@ const handleLogin = async () => {
   color: #fff;
 }
 </style>
-

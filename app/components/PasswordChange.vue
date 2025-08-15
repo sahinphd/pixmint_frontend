@@ -1,31 +1,91 @@
 <template>
   <div class="settings-card">
-    <h5 class="mb-3">Change Password</h5>
+    <h5 class="mb-4">Change Password</h5>
     <form @submit.prevent="changePassword">
       <div class="mb-3">
         <label class="form-label">Current Password</label>
-        <input v-model="current" type="password" class="form-control" required />
+        <input v-model="old_password" type="password" class="form-control" required />
       </div>
       <div class="mb-3">
         <label class="form-label">New Password</label>
-        <input v-model="newPass" type="password" class="form-control" required />
+        <input v-model="new_password" type="password" class="form-control" required />
       </div>
-      <button class="btn btn-success w-100" type="submit">Update Password</button>
-      <div v-if="message" class="alert alert-success mt-3 text-center">{{ message }}</div>
+      <div class="mb-3">
+        <label class="form-label">Confirm New Password</label>
+        <input v-model="confirm_password" type="password" class="form-control" required />
+      </div>
+      <button class="btn btn-success w-100" type="submit" :disabled="loading">
+        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        {{ loading ? 'Updating...' : 'Update Password' }}
+      </button>
+      <div v-if="message" class="alert alert-success mt-3 text-center" role="alert" aria-live="polite">{{ message }}</div>
+      <div v-if="error" class="alert alert-danger mt-3 text-center" role="alert" aria-live="polite">{{ error }}</div>
     </form>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-const current = ref('')
-const newPass = ref('')
+import DRFapi from '~/utils/drf_api.js'
+
+const old_password = ref('')
+const new_password = ref('')
+const confirm_password = ref('')
 const message = ref('')
-const changePassword = () => {
-  // Simulate password change
-  message.value = 'Password updated successfully!'
-  current.value = ''
-  newPass.value = ''
+const error = ref('')
+const loading = ref(false)
+
+const changePassword = async () => {
+  message.value = ''
+  error.value = ''
+
+  if (new_password.value !== confirm_password.value) {
+    error.value = 'New passwords do not match.'
+    return
+  }
+
+  loading.value = true;
+  try {
+    const response = await DRFapi.post('users/change_password/', {
+      old_password: old_password.value,
+      new_password: new_password.value,
+      confirm_password: confirm_password.value
+    });
+
+    if (response.status === 200) {
+      message.value = response.data.detail || 'Password updated successfully!';
+      old_password.value = ''
+      new_password.value = ''
+      confirm_password.value = ''
+      // Clear the success message after a few seconds for better UX
+      setTimeout(() => { message.value = '' }, 4000);
+    } else {
+      // This block is less likely to be hit with Axios, as non-2xx statuses throw errors.
+      // Kept for safety.
+      error.value = response.data.detail || 'An error occurred.'
+    }
+  } catch (err) {
+    if (err.response?.data) {
+      const errorData = err.response.data;
+      // Handle DRF's standard validation errors (e.g., {"new_password": ["..."]})
+      if (typeof errorData === 'object' && !errorData.detail) {
+        error.value = Object.entries(errorData)
+          .map(([field, messages]) => `${field.replace('_', ' ')}: ${messages.join(' ')}`)
+          .join('\n');
+      }
+      // Handle DRF's detail message (e.g., {"detail": "..."})
+      else if (errorData.detail) {
+        error.value = errorData.detail;
+      } else {
+        error.value = 'An unexpected error occurred.';
+      }
+    } else {
+      // Handle network errors or other issues
+      error.value = 'An error occurred while changing the password.';
+    }
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 

@@ -24,8 +24,8 @@
 
           <!-- User ID -->
           <div class="col-12 d-flex align-items-center mb-2">
-            <label for="userid" class="col-2 form-label me-2 mb-0">Login ID</label>
-            <input type="text" id="userid" v-model="userid" class="form-control form-control-sm" placeholder="User ID"
+            <label for="userid" class="col-2 form-label me-2 mb-0">Mobile:</label>
+            <input type="text" id="userid" v-model="userid" class="form-control form-control-sm" placeholder="(Your Mobile Number without country code)"
               required>
           </div>
 
