@@ -12,10 +12,11 @@ const DRFapi = axios.create({
 // Optional: Add token automatically to requests
 DRFapi.interceptors.request.use(config => {
   // const token = localStorage.getItem('access_token')
-  const token = localStorage.getItem('refresh')
+  const token = localStorage.getItem('access_token')
+
   if (token) {
-    config.headers.Authorization = `Token ${token}`
-      // config.headers.Authorization = `Bearer ${token}`
+    // config.headers.Authorization = `Token ${token}`
+      config.headers.Authorization = `Bearer ${token}`
   }
   return config
 })
