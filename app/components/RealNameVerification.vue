@@ -6,23 +6,15 @@
         <label class="form-label">Full Name</label>
         <input v-model="realName" type="text" class="form-control" required />
       </div>
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label class="form-label">Phone(WhatsApp)</label>
         <input v-model="phone" type="text" placeholder="+1 1234567890" class="form-control" required />
         <button class="btn btn-sm btn-warning mt-2" type="button" @click="sendOTP('phone')">Send OTP</button>
-        <div v-if="showOtpFieldPhone">
-          <input v-model="otpPhone" type="text" class="form-control mt-2" placeholder="Enter OTP" />
-          <button class="btn btn-sm btn-success mt-2" type="button" @click="verifyOTP('phone')">Verify Phone OTP</button>
-        </div>
-      </div>
+      </div> -->
       <div class="mb-3">
         <label class="form-label">Email</label>
         <input v-model="email" type="email" class="form-control" required />
         <button class="btn btn-sm btn-warning mt-2" type="button" @click="sendOTP('email')">Send OTP</button>
-        <div v-if="showOtpFieldEmail">
-          <input v-model="otpEmail" type="text" class="form-control mt-2" placeholder="Enter OTP" />
-          <button class="btn btn-sm btn-success mt-2" type="button" @click="verifyOTP('email')">Verify Email OTP</button>
-        </div>
       </div>
       <div class="mb-3">
         <label class="form-label">National ID Card</label>
@@ -34,6 +26,17 @@
       <button class="btn btn-success w-100" type="submit">Verify</button>
       <div v-if="message" class="alert alert-success mt-3 text-center">{{ message }}</div>
     </form>
+
+    <!-- OTP Modal -->
+    <div v-if="showOtpPopup" class="otp-modal">
+      <div class="otp-modal-content">
+        <button class="close-button" @click="showOtpPopup = false">&times;</button>
+        <h5>Enter OTP</h5>
+        <p>An OTP has been sent to your {{ otpType }}.</p>
+        <input v-model="otp" type="text" class="form-control" placeholder="Enter OTP" />
+        <button class="btn btn-success w-100 mt-3" @click="verifyOTP">Verify OTP</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,60 +45,57 @@ import { ref } from 'vue'
 const realName = ref('')
 const phone = ref('')
 const email = ref('')
-const otpPhone = ref('')
-const otpEmail = ref('')
+const otp = ref('')
 const nidFile = ref(null)
 const nidPreview = ref('')
 const message = ref('')
+const showOtpPopup = ref(false)
+const otpType = ref('')
 
-const sendOTP = (type) => {
-  message.value = `OTP sent to your ${type}!`
-  if (type === 'phone') {
-    showOtpFieldPhone.value = true
-  } else if (type === 'email') {
-    showOtpFieldEmail.value = true
+const sendOTP = async (type) => {
+  message.value = `Sending OTP to your ${type}...`
+  otpType.value = type
+
+  try {
+    const { data, error } = await useFetch('https://api.pixmintai.com/users/email_verify/', {
+      method: 'POST',
+      body: JSON.stringify({ email: email.value }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    if (error.value) {
+      throw new Error(error.value.data?.detail || 'Failed to send OTP')
+    }
+
+    message.value = `OTP sent to your ${type}!`
+    showOtpPopup.value = true
+  } catch (err) {
+    message.value = err.message
   }
 }
 
-const verifyOTP = async (type) => {
-  if (type === 'phone') {
-    if (otpPhone.value) {
-      message.value = 'Verifying phone OTP...'
-      // Simulate API call for phone OTP verification
-      try {
-        // Replace with actual API call
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
-        if (otpPhone.value === '123456') { // Example OTP
-          message.value = 'Phone OTP verified successfully!'
-        } else {
-          message.value = 'Invalid phone OTP.'
-        }
-      } catch (error) {
-        message.value = 'Error verifying phone OTP.'
-        console.error('Phone OTP verification error:', error)
+const verifyOTP = async () => {
+  if (otp.value) {
+    message.value = `Verifying ${otpType.value} OTP...`
+    showOtpPopup.value = false
+
+    try {
+      const { data, error } = await useFetch('https://api.pixmintai.com/users/verify_otp/', {
+        method: 'POST',
+        body: JSON.stringify({ email: email.value, otp: otp.value }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (error.value) {
+        throw new Error(error.value.data?.detail || 'Invalid OTP')
       }
-    } else {
-      message.value = 'Please enter phone OTP.'
+
+      message.value = `${otpType.value.charAt(0).toUpperCase() + otpType.value.slice(1)} OTP verified successfully!`
+    } catch (err) {
+      message.value = err.message
     }
-  } else if (type === 'email') {
-    if (otpEmail.value) {
-      message.value = 'Verifying email OTP...'
-      // Simulate API call for email OTP verification
-      try {
-        // Replace with actual API call
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
-        if (otpEmail.value === '654321') { // Example OTP
-          message.value = 'Email OTP verified successfully!'
-        } else {
-          message.value = 'Invalid email OTP.'
-        }
-      } catch (error) {
-        message.value = 'Error verifying email OTP.'
-        console.error('Email OTP verification error:', error)
-      }
-    } else {
-      message.value = 'Please enter email OTP.'
-    }
+  } else {
+    message.value = 'Please enter OTP.'
   }
 }
 
@@ -146,5 +146,32 @@ const submitVerification = () => {
   border-radius: 8px;
   margin-top: 0.5rem;
   border: 2px solid #baff5a;
+}
+.otp-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.otp-modal-content {
+  background: #181c20;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
 }
 </style>
