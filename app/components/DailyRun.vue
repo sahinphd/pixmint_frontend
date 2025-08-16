@@ -93,7 +93,7 @@ import DRFapi from '@/utils/drf_api'
 const props = defineProps({
   duration: {
     type: Number,
-    default: 300 // 30 seconds default
+    default: 3600 // 1 hour (3600 seconds)
   },
   reward: {
     type: Number,
@@ -153,9 +153,10 @@ const reward = computed(() => props.reward)
 
 // Methods
 const formatTime = (seconds) => {
-  const mins = Math.floor(seconds / 60)
+  const hours = Math.floor(seconds / 3600)
+  const mins = Math.floor((seconds % 3600) / 60)
   const secs = seconds % 60
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
 }
 
 const getStorageKey = () => {
@@ -189,7 +190,7 @@ const checkDailyTaskStatus = () => {
         const startTime = new Date(running.startTime)
         const now = new Date()
         const elapsedSeconds = Math.floor((now - startTime) / 1000)
-        const remaining = props.duration - elapsedSeconds
+        const remaining = (running.duration || props.duration) - elapsedSeconds
         
         if (remaining > 0) {
           // Task is still running, restore timer
