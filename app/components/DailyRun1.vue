@@ -810,7 +810,7 @@ defineExpose({
 /* Compact mobile layout */
 @media (max-width: 576px) {
   .daily-run-card {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
   
   .daily-run-container {

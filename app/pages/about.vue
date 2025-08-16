@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="container-sm  text-white">
-      <div class="row">
-        
+      <div class="row my-0 py-0">
+
         <!-- Daily Run Component -->
-        <div class="col-12">
+        <div class="col-12 my-0">
           <DailyRun 
-            :duration="30"
+            :duration="3600"
             :reward="2.5"
             :auto-reset="true"
             @task-completed="onTaskCompleted"
