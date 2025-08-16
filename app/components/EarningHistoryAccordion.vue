@@ -16,33 +16,47 @@
     </div>
 
     <div v-else class="accordion" id="earningHistoryAccordion">
-      <div v-for="(earning, index) in earnings" :key="earning.id" class="accordion-item mb-3 rounded">
-        <h2 class="accordion-header" :id="'heading' + earning.id">
+      <div
+        v-for="(earning, index) in earnings"
+        :key="index"
+        class="accordion-item mb-3 rounded"
+      >
+        <h2 class="accordion-header" :id="'heading' + index">
           <button
             class="accordion-button collapsed bg-secondary text-white"
             type="button"
             data-bs-toggle="collapse"
-            :data-bs-target="'#collapse' + earning.id"
+            :data-bs-target="'#collapse' + index"
             aria-expanded="false"
-            :aria-controls="'collapse' + earning.id"
+            :aria-controls="'collapse' + index"
           >
             <div class="d-flex justify-content-between w-100 pe-3">
-              <span>Amount: <span class="text-success fw-bold">{{ earning.amount }}</span></span>
-              <span class="text-muted">{{ new Date(earning.date).toLocaleDateString() }}</span>
+              <span>
+                Amount:
+                <span class="text-success fw-bold">
+                  {{ earning.earning_amount }} {{ earning.currency }}
+                </span>
+              </span>
+              <span class="text-white">
+                {{ new Date(earning.datetime).toLocaleDateString() }}
+              </span>
             </div>
           </button>
         </h2>
         <div
-          :id="'collapse' + earning.id"
+          :id="'collapse' + index"
           class="accordion-collapse collapse"
-          :aria-labelledby="'heading' + earning.id"
+          :aria-labelledby="'heading' + index"
           :data-bs-parent="'#earningHistoryAccordion'"
         >
           <div class="accordion-body bg-dark text-white">
-            <p><strong>Type:</strong> <span :class="['badge', earning.type === 'credit' ? 'bg-success' : 'bg-danger']">{{ earning.type }}</span></p>
-            <p><strong>Description:</strong> {{ earning.description || 'N/A' }}</p>
-            <p><strong>Transaction ID:</strong> {{ earning.transaction_id || 'N/A' }}</p>
-            <!-- Add more details as per your earning object structure -->
+            <p>
+              <strong>Type:</strong>
+              <span class="badge bg-success">{{ earning.earning_type }}</span>
+            </p>
+            <p><strong>Reason:</strong> {{ earning.reason || 'N/A' }}</p>
+            <p><strong>Earning From:</strong> {{ earning.earning_from }}</p>
+            <p><strong>Date & Time:</strong> {{ new Date(earning.datetime).toLocaleString() }}</p>
           </div>
         </div>
       </div>
@@ -75,13 +89,19 @@ const fetchEarningHistory = async () => {
   loading.value = true;
   error.value = null;
   try {
-    // This is the placeholder API endpoint. Confirm with backend.
-    const response = await DRFapi.post('/earnings/history/', { user_id: user.value.id });
-    // Assuming the API returns an array of earning objects with 'id', 'amount', 'date', 'type', 'description', 'transaction_id'
+    const response = await DRFapi.post('/slab/earning_list_by_user/', {
+      user_id: user.value.id,
+    });
+
+    // ✅ Directly assign since API already returns array
     earnings.value = response.data;
+
+    console.log('Earning history fetched successfully:', earnings.value);
   } catch (err) {
     console.error('Failed to fetch earning history:', err);
-    error.value = err.response?.data?.message || 'Failed to load earning history. Please try again.';
+    error.value =
+      err.response?.data?.message ||
+      'Failed to load earning history. Please try again.';
   } finally {
     loading.value = false;
   }
