@@ -139,7 +139,7 @@ const getStatusClass = (status) => {
 
 const fetchOrders = async (userId) => {
   try {
-    const drfRes = await DRFapi.get('/orders/list/', { user_id: userId })
+    const drfRes = await DRFapi.post('/orders/list/', { user_id: userId })
 
     if (!drfRes.data) {
       throw new Error('No data returned from API')
