@@ -19,38 +19,19 @@
     </div>
 
     <div v-else class="withdrawals-list">
-      <div v-for="withdrawal in filteredSortedWithdrawals" :key="withdrawal.withdrawal_id" class="withdrawal-row">
+      <div v-for="(w, idx) in withdrawals" :key="idx" class="withdrawal-row">
         <div class="withdrawal-main">
-          <div class="withdrawal-id">
-            <span class="id-text">#{{ withdrawal.withdrawal_id }}</span>
-            <span class="status-badge" :class="getStatusClass(withdrawal.withdrawal_status)">
-              {{ withdrawal.withdrawal_status }}
-            </span>
+          <div>
+            <span class="withdrawal-amount">{{ w.amount }}</span>
+            <span class="currency">Balance: {{ w.balance }}</span>
           </div>
-          
-          <div class="withdrawal-amount">
-            <span class="currency">{{ withdrawal.withdrawal_currency }}</span>
-            <span class="amount">{{ withdrawal.withdrawal_amount }}</span>
-          </div>
+          <span class="status-badge" :class="getStatusClass(w.status)">
+            {{ w.status }}
+          </span>
         </div>
-        
         <div class="withdrawal-details">
-          <div class="withdrawal-date">
-            {{ formatDate(withdrawal.withdrawal_time) }}
-          </div>
-          
-          <div v-if="withdrawal.withdrawal_address" class="withdrawal-address">
-            <strong>To:</strong> {{ withdrawal.withdrawal_address }}
-          </div>
-          
-          <div v-if="withdrawal.withdrawal_fee" class="withdrawal-fee">
-            <strong>Fee:</strong> {{ withdrawal.withdrawal_fee }} {{ withdrawal.withdrawal_currency }}
-          </div>
-          
-          <div v-if="withdrawal.withdrawal_error" class="withdrawal-error">
-            <i class="error-icon">⚠️</i>
-            {{ withdrawal.withdrawal_error }}
-          </div>
+          <span class="withdrawal-date">{{ formatDate(w.date) }}</span>
+          <span v-if="w.note" class="withdrawal-note">{{ w.note }}</span>
         </div>
       </div>
     </div>
@@ -114,22 +95,20 @@ const filteredSortedWithdrawals = computed(() => {
 
 const fetchWithdrawals = async (userId) => {
   try {
-    const drfRes = await DRFapi.post('/withdrawals/list/', { user_id: userId })
-
-    if (!drfRes.data) {
-      throw new Error('No data returned from API')
-    }
-
-    const withdrawalsArray = Object.values(drfRes.data)
-    
-    // Additional client-side filtering to ensure only current user's withdrawals
-    return withdrawalsArray.filter(withdrawal => 
-      withdrawal.user_id === userId || withdrawal.user === userId
-    )
+    const res = await DRFapi.post('/withdraw/history/', { user_id: userId });
+    // Map array data to objects
+    const withdrawalsArray = res.data.map(item => ({
+      amount: item[0],
+      balance: item[1],
+      date: item[2],
+      status: item[3],
+      note: item[4] || ''
+    }));
+    withdrawals.value = withdrawalsArray;
+    pending.value = false;
   } catch (err) {
-    console.error('Error fetching withdrawals:', err)
-    error.value = err.message || 'Failed to fetch withdrawals'
-    return []
+    error.value = err.message || 'Failed to fetch withdrawals';
+    pending.value = false;
   }
 }
 

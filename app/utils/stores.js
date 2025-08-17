@@ -6,12 +6,14 @@ export const useAuth = () => {
     access.value = accessToken;
     refresh.value = refreshToken;
     localStorage.setItem('refresh', refreshToken);
+    localStorage.setItem('access', accessToken);
   };
 
   const logout = () => {
     access.value = null;
     refresh.value = null;
     localStorage.removeItem('refresh');
+    localStorage.removeItem('access');
   };
 
   return { access, refresh, setTokens, logout };
