@@ -63,7 +63,9 @@ const handleLogin = async () => {
       userid: tokens.userid,
       name: tokens.name,
       usercode: tokens.usercode,
-      refarcode: tokens.refarcode
+      refarcode: tokens.refarcode,
+      email: tokens.email,
+      slab_name: tokens.slab_name
     }));
     // Redirect to index
     await router.push("/");
