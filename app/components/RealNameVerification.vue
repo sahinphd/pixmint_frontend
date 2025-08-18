@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 const realName = ref('')
 const phone = ref('')
 const email = ref('')
@@ -51,6 +51,19 @@ const nidPreview = ref('')
 const message = ref('')
 const showOtpPopup = ref(false)
 const otpType = ref('')
+
+
+const storedUser = ref(null)
+
+onMounted(() => {
+  const storedUserRaw = localStorage.getItem('user');
+  if (storedUserRaw) {
+    const storedUser = JSON.parse(storedUserRaw);
+    realName.value = storedUser.name || '';
+    email.value = storedUser.email || '';
+    phone.value = storedUser.phone || '';
+  }
+});
 
 const sendOTP = async (type) => {
   message.value = `Sending OTP to your ${type}...`
@@ -99,13 +112,37 @@ const verifyOTP = async () => {
   }
 }
 
-const handleFile = (e) => {
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/<your_cloud_name>/image/upload';
+const CLOUDINARY_UPLOAD_PRESET = '<your_upload_preset>';
+
+const handleFile = async (e) => {
   const file = e.target.files[0]
   if (file) {
     nidFile.value = file
+    // Local preview
     const reader = new FileReader()
     reader.onload = (ev) => { nidPreview.value = ev.target.result }
     reader.readAsDataURL(file)
+
+    // Upload to Cloudinary
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+    try {
+      const res = await fetch(CLOUDINARY_URL, {
+        method: 'POST',
+        body: formData
+      })
+      const data = await res.json()
+      if (data.secure_url) {
+        nidPreview.value = data.secure_url // Use Cloudinary URL for preview/storage
+        message.value = 'NID uploaded successfully!'
+      } else {
+        message.value = 'Failed to upload NID to Cloudinary.'
+      }
+    } catch (err) {
+      message.value = 'Cloudinary upload error: ' + err.message
+    }
   }
 }
 const submitVerification = () => {

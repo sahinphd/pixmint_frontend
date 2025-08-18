@@ -75,9 +75,11 @@ onMounted(async () => {
 const fetchTotalAmount = async () => {
   if (!user.value?.id) return;
   try {
-    const response = await DRFapi.post('/orders/totalamount/', { user_id: user.value.id });
-    const firstValue = Object.values(response.data)[0];
-    totalAmount.value = Number(firstValue) || 0;
+    // const response = await DRFapi.post('/orders/totalamount/', { user_id: user.value.id });
+    const response = await DRFapi.post('/slab/total_earning_by_user/', { user_id: user.value.id });
+    if (response.data.length > 0) {
+      totalAmount.value = response.data[0].total_earning_amount;
+    }
   } catch (e) {
     console.error('Failed to fetch total amount:', e);
     totalAmount.value = 0;

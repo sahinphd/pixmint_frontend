@@ -6,7 +6,7 @@
           <h2>Login</h2>
           <form @submit.prevent="handleLogin">
             <div class="form-group">
-              <input v-model="userid" placeholder="Mobile Number without country code (Login ID)" class="form-control mb-2">
+              <input v-model="userid" placeholder="Mobile without Prefix (Login ID)" class="form-control mb-2">
               <input v-model="password" type="password" placeholder="Password" class="form-control mb-2">
               <button type="submit" class="btn btn-warning mb-2">Login</button>
               <p v-if="error" class="text-danger">{{ error }}</p>

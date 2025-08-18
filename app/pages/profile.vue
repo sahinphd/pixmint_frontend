@@ -8,42 +8,58 @@
             <img src="../assets/img/head.png" class="rounded-circle me-3" alt="avatar" width="40" height="40">
             <div class="flex-grow-1">
               <div class="d-flex align-items-center flex-wrap mb-1">
-                <h6 class="mb-0 me-2">{{ user?.name || 'User' }}</h6>
-                <span class="badge bg-success text-white me-2">{{ user?.email || 'user@example.com' }}</span>
+                <h6 class="mb-0 me-2">{{ user?.name || 'User Name Error' }}</h6>
+                <span class="badge bg-success text-white me-2">{{ user?.email || 'Email Error' }}</span>
               </div>
               <div class="d-flex align-items-center flex-wrap">
-                <span class="badge bg-warning text-dark me-2 d-flex align-items-center fw-semibold">💎 P0</span>
-                <span class="text-success fw-semibold">⬆ +0%</span>
+                <span class="badge bg-warning text-dark me-2 d-flex align-items-center fw-semibold">💎 {{
+                  user?.slab_name || 'P0' }}</span>
+                <span class="text-success fw-semibold">⬆+0%</span>
               </div>
             </div>
           </div>
 
           <!-- Stats Section -->
           <div class="row g-2 mt-2">
+            
             <div class="col-6 col-md-4">
               <div class="p-2 bg-dark rounded h-100">
-                <p class="small mb-1">Total Asset: <i class="bi bi-eye-fill" style="cursor: pointer;"></i></p>
-                <h4 class="mb-0">{{ totalAmount.toFixed(2) }}</h4>
+                <p class="small mb-1">Total Asset:
+                  <i class="bi bi-eye-fill" style="cursor: pointer;" @click="showDetails = !showDetails"></i>
+                </p>
+                <h4 class="mb-0">{{ totalAsset.toFixed(2) }}</h4>
+
+                <div v-show="showDetails" class="flex-column gap-1">
+                  <span class="ms-2 small">Order:
+                    <TotalOrderAmount :userId="user?.id" v-model="totalAmount" />
+                  </span>
+                  <span class="ms-2 small">Earning:
+                    <TotalEarningByUser :userId="user?.id" v-model="totalEarning" />
+                  </span>
+                </div>
+              
               </div>
             </div>
             <div class="col-6 col-md-4">
               <div class="p-2 bg-dark rounded h-100">
-                <p class="small mb-1">Today's earnings: <span class="text-success">{{ new Date().toLocaleDateString() }}</span></p>
+                <p class="small mb-1">Today's earnings: <span class="text-success">{{ new Date().toLocaleDateString()
+                    }}</span></p>
                 <p class="mb-0">
-                  <span class="text-success">4.3</span> / <span class="text-danger">1.5</span> %
+                  <span class="text-success">-</span> / <span class="text-danger">-</span> %
                 </p>
               </div>
             </div>
             <div class="col-12 col-md-4">
               <div class="p-2 bg-dark rounded h-100">
                 <div class="history" @click="$router.push('/earning-history')" style="cursor: pointer;">
-                  <h6 class="mb-0">Historical Record</h6>
+                  <h6 class="mb-0">Historical Record &nbsp;<i class="bi bi-eye-fill" style="cursor: pointer;" ></i></h6>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <i class="bi bi-gear-fill fs-5 text-white position-absolute top-0 end-0 m-3" @click="$router.push('/settings')" style="cursor: pointer;" />
+        <i class="bi bi-gear-fill fs-5 text-white position-absolute top-0 end-0 m-3" @click="$router.push('/settings')"
+          style="cursor: pointer;" />
       </div>
 
 
@@ -107,10 +123,10 @@
                 <label class="form-label text-dark">Pay Currency</label>
                 <select v-model="form.pay_currency" class="form-select text-dark bg-success" required>
                   <option value="usdtbsc">USDT BSC</option>
-                  <option value="btc">BTC</option>
-                  <option value="eth">ETH</option>
+                  <!-- <option value="btc">BTC</option> -->
+                  <!-- <option value="eth">ETH</option> -->
                   <option value="trx">TRX</option>
-                  <option value="ltc">LTC</option>
+                  <!-- <option value="ltc">LTC</option> -->
                 </select>
               </div>
             </div>
@@ -137,10 +153,10 @@
 
 
     <!-- Currency Vouchers Component -->
-     <div class="container-md p-0 mt-0">
+    <div class="container-md p-0 mt-0">
       <CurrencyVouchers />
-     </div>
-    
+    </div>
+
     <!-- Logout Component -->
     <LogoutButton />
 
@@ -148,7 +164,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import DRFapi from '@/utils/drf_api';
 import QRCode from 'qrcode.vue';
@@ -156,17 +172,21 @@ import OrderList2 from '@/components/OrderList2.vue';
 import CurrencyVouchers from '@/components/CurrencyVouchers.vue';
 import LogoutButton from '@/components/LogoutButton.vue';
 import CopyReferral from '@/components/CopyReferral.vue';
+import TotalOrderAmount from '@/components/TotalOrderAmount.vue';
+import TotalEarningByUser from '~/components/TotalEarningByUser.vue';
 
 const user = ref(null);
 const router = useRouter();
 const totalAmount = ref(0);
+const totalEarning = ref(0);
+const showDetails = ref(false);
 const showModal = ref(false);
 const loading = ref(false);
 const error = ref('');
 
 const form = ref({
   price_amount: '',
-  pay_currency: 'usdcbsc'
+  pay_currency: 'usdtbsc'
 });
 
 const showQRModal = ref(false);
@@ -176,6 +196,10 @@ const paymentPrice = ref('');
 const paymentCurrency = ref('');
 const paymentPriceCurrency = ref('');
 const paymentAddress = ref('');
+
+const totalAsset = computed(() => {
+  return (Number(totalEarning.value) || 0) + (Number(totalAmount.value) || 0);
+});
 
 onMounted(() => {
   const storedUser = localStorage.getItem('user');
@@ -318,7 +342,8 @@ const createPayment = async () => {
   color: #fff;
 }
 
-.btn:disabled {
+
+.abled {
   opacity: 0.6;
   cursor: not-allowed;
 }

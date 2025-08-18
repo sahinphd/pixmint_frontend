@@ -10,7 +10,7 @@
     <div class="profile-info">
       <div><span>Name:</span> {{ profile.name }}</div>
       <div><span>User Code:</span> {{ profile.uid }} <button class="copy-btn" @click="copyUID">📋</button></div>
-      <div><span>Registration Time:</span> {{ profile.registrationTime }}</div>
+      <!-- <div><span>Registration Time:</span> {{ profile.registrationTime }}</div> -->
       <div><span>Subscription:</span> <span class="membership">{{ profile.membership }}</span> 
         <!-- <button class="upgrade-btn">Upgrade</button> -->
     </div>
@@ -44,12 +44,12 @@ onMounted(() => {
     // Update profile with user data
     profile.value = {
       avatar: '/assets/img/9.png', 
-      name: user.value?.name || 'User Name',
-      email: user.value?.email || 'useremail@pixmintai.com',
-      phone: user.value?.phone || '+1 9876543210',
-      uid: user.value?.usercode || 'NA',
-      registrationTime: user.value?.registrationTime || '2025-04-22 15:26:37',
-      membership: user.value?.membership || 'na'
+      name: user.value?.name || '',
+      email: user.value?.email || '',
+      phone: user.value?.phone || '',
+      uid: user.value?.usercode || '',
+      // registrationTime: user.value?.registrationTime || '',
+      membership: user.value?.slab_name || ''
     };
   }
 });
