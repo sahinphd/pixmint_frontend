@@ -52,7 +52,7 @@
             <div class="col-12 col-md-4">
               <div class="p-2 bg-dark rounded h-100">
                 <div class="history" @click="$router.push('/earning-history')" style="cursor: pointer;">
-                  <h6 class="mb-0">Historical Record &nbsp;<i class="bi bi-eye-fill" style="cursor: pointer;" ></i></h6>
+                  <h6 class="mb-0">Earning Record &nbsp;<i class="bi bi-eye-fill" style="cursor: pointer;" ></i></h6>
                 </div>
               </div>
             </div>

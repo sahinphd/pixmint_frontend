@@ -116,7 +116,8 @@ onMounted(() => {
 
 function openChat() {
   // router.push('/chat')
-  alert('Coming Soon')
+  router.push('/comingsoon')
+  // alert('Coming Soon')
 }
 // function logout() {
 //   localStorage.removeItem('user')
