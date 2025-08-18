@@ -13,8 +13,7 @@
             </div>
           </form>
           <div class="col-12 text-center mt-2">
-            <small>Forgot Password? &nbsp;<a href="#" @click.prevent="$router.push('/login')" class="text-danger">Reset
-                Password</a>
+            <small><a href="#" @click.prevent="$router.push('/login')" class="text-danger">Forgot Password?</a>
             </small>
           </div>
 

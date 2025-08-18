@@ -40,7 +40,7 @@
               
               </div>
             </div>
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-4 d-none">
               <div class="p-2 bg-dark rounded h-100">
                 <p class="small mb-1">Today's earnings: <span class="text-success">{{ new Date().toLocaleDateString()
                     }}</span></p>
